@@ -30,22 +30,10 @@ void test_calculate_level(TankLevel &tl, int measure, int level){
 }
 
 // level 0 must be returned if the height is gt height-min_height
-void test_calculate_level_0(){
+void test_calculate_levels_4(){
     TankLevel tl;
     init_tank_level(tl, 100, 10, 4);
     test_calculate_level(tl, 91, 0);
-}
-
-// level 1 must be returned if the height is gt height-(height/levels)
-void test_calculate_level_1(){
-    TankLevel tl;
-    init_tank_level(tl, 100, 10, 4);
     test_calculate_level(tl, 78, 1);
-}
-
-// level 2 must be returned if the height is gt height-2*(height/levels)
-void test_calculate_level_2(){
-    TankLevel tl;
-    init_tank_level(tl, 100, 10, 4);
     test_calculate_level(tl, 60, 2);
 }
