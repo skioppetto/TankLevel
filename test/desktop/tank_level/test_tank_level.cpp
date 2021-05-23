@@ -38,3 +38,28 @@ void test_calculate_levels_4(){
     test_calculate_level(tl, 45, 3);
     test_calculate_level(tl, 20, 4);
 }
+
+void test_calculate_levels_5(){
+    TankLevel tl;
+    init_tank_level(tl, 100, 10, 5);
+    test_calculate_level(tl, 91, 0);
+    test_calculate_level(tl, 85, 1);
+    test_calculate_level(tl, 66, 2);
+    test_calculate_level(tl, 48, 3);
+    test_calculate_level(tl, 24, 4);
+    test_calculate_level(tl, 10, 5);
+}
+
+void test_calculate_levels_8_height_80(){
+    TankLevel tl;
+    init_tank_level(tl, 80, 5, 8);
+    test_calculate_level(tl, 97, 0);
+    test_calculate_level(tl, 75, 1);
+    test_calculate_level(tl, 66, 2);
+    test_calculate_level(tl, 55, 3);
+    test_calculate_level(tl, 44, 4);
+    test_calculate_level(tl, 38, 5);
+    test_calculate_level(tl, 27, 6);
+    test_calculate_level(tl, 13, 7);
+    test_calculate_level(tl, 6, 8);
+}
