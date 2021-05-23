@@ -24,10 +24,14 @@ void test_set_measure(){
     TEST_ASSERT_EQUAL_INT(50, tl.getMeasure());
 }
 
+void test_calculate_level(TankLevel &tl, int measure, int level){
+    tl.setMeasure(measure);
+    TEST_ASSERT_EQUAL_INT(level, tl.getLevel());
+}
+
 // level 0 must be returned if the height is gt height-min_height
 void test_calculate_level_0(){
     TankLevel tl;
     init_tank_level(tl, 100, 10, 4);
-    tl.setMeasure(91);
-    TEST_ASSERT_EQUAL_INT(0, tl.getLevel());
+    test_calculate_level(tl, 91, 0);
 }
