@@ -12,6 +12,7 @@ int main(int argc, char const *argv[])
     RUN_TEST(test_tank_level_init);
     RUN_TEST(test_set_measure);
     RUN_TEST(test_calculate_level_0);
+    RUN_TEST(test_calculate_level_1);
     UNITY_END();
     return 0;
 }

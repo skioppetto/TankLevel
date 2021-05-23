@@ -35,3 +35,10 @@ void test_calculate_level_0(){
     init_tank_level(tl, 100, 10, 4);
     test_calculate_level(tl, 91, 0);
 }
+
+// level 1 must be returned if the height is gt height-(height/levels)
+void test_calculate_level_1(){
+    TankLevel tl;
+    init_tank_level(tl, 100, 10, 4);
+    test_calculate_level(tl, 78, 1);
+}
