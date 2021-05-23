@@ -14,4 +14,5 @@ public:
     int getLevels();
     void setMeasure(int);
     int getMeasure();
+    int getLevel();
 };

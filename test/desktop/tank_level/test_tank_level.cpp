@@ -23,3 +23,11 @@ void test_set_measure(){
     tl.setMeasure (50);
     TEST_ASSERT_EQUAL_INT(50, tl.getMeasure());
 }
+
+// level 0 must be returned if the height is gt height-min_height
+void test_calculate_level_0(){
+    TankLevel tl;
+    init_tank_level(tl, 100, 10, 4);
+    tl.setMeasure(91);
+    TEST_ASSERT_EQUAL_INT(0, tl.getLevel());
+}

@@ -16,3 +16,4 @@ int TankLevel::getHeightCm(){return heightCm;}
 int TankLevel::getMinHeightCm(){return minHeightCm;}
 int TankLevel::getLevels(){return levels;}
 int TankLevel::getMeasure(){return measure;}
+int TankLevel::getLevel(){return 0;}
