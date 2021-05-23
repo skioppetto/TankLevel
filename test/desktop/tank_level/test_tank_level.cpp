@@ -36,4 +36,6 @@ void test_calculate_levels_4(){
     test_calculate_level(tl, 91, 0);
     test_calculate_level(tl, 78, 1);
     test_calculate_level(tl, 60, 2);
+    test_calculate_level(tl, 45, 3);
+    test_calculate_level(tl, 20, 4);
 }
