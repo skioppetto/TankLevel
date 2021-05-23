@@ -10,6 +10,7 @@ int main(int argc, char const *argv[])
     UNITY_BEGIN();
     RUN_TEST(test_assert_running_desktop);
     RUN_TEST(test_tank_level_init);
+    RUN_TEST(test_set_measure);
     UNITY_END();
     return 0;
 }

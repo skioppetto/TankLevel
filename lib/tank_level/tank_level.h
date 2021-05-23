@@ -2,7 +2,7 @@ class TankLevel
 {
 private:
     /* data */
-    int heightCm, minHeightCm, levels;
+    int heightCm, minHeightCm, levels, measure;
 public:
     TankLevel(/* args */);
     ~TankLevel();
@@ -12,4 +12,6 @@ public:
     int getMinHeightCm();
     void setLevels(int);
     int getLevels();
+    void setMeasure(int);
+    int getMeasure();
 };

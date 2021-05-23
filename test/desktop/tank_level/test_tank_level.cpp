@@ -2,7 +2,6 @@
 #include<tank_level.h>
 
 // tank_level need to be initiated passing at least the height, the min_height and number of levels. 
-
 void init_tank_level(TankLevel &tl, int height, int minHeight, int levels){
     tl.setHeightCm(height);
     tl.setMinHeightCm(minHeight);
@@ -16,3 +15,11 @@ void test_tank_level_init(){
     TEST_ASSERT_EQUAL_INT(10, tl.getMinHeightCm());
     TEST_ASSERT_EQUAL_INT(4, tl.getLevels());
 } 
+
+
+// measure set
+void test_set_measure(){
+    TankLevel tl; 
+    tl.setMeasure (50);
+    TEST_ASSERT_EQUAL_INT(50, tl.getMeasure());
+}
