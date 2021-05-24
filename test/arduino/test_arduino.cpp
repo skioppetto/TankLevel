@@ -6,11 +6,15 @@ void test_assert_running_arduino(){
     TEST_ASSERT_TRUE(true);
 }
 
-int main(int argc, char const *argv[])
+void setup(){
+    
+}
+
+void loop()
 {
     UNITY_BEGIN();
     RUN_TEST(test_assert_running_arduino);
     RUN_TEST(test_hcsr04_init);
+    RUN_TEST(test_hcsr04_trig_output);
     UNITY_END();
-    return 0;
 }
