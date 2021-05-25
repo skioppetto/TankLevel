@@ -15,4 +15,5 @@ void test_hcsr04_trig_output(){
     int state = digitalRead(HCSR04_TRIG_PIN);
     digitalWrite(HCSR04_TRIG_PIN, !state);
     TEST_ASSERT_EQUAL_INT(!state, digitalRead(HCSR04_TRIG_PIN));
+    digitalWrite(HCSR04_TRIG_PIN, state);   // restore initial state
 }
