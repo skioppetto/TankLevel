@@ -15,6 +15,5 @@ void loop()
     UNITY_BEGIN();
     RUN_TEST(test_assert_running_arduino);
     RUN_TEST(test_hcsr04_init);
-    RUN_TEST(test_hcsr04_trig_output);
     UNITY_END();
 }
