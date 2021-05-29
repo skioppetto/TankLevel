@@ -67,6 +67,25 @@ void test_hcsr04_isReady(){
     hcsr04_isReady(r);
 }
 
-void test_hcsr04_interval(){
+unsigned long  hcsr04_interval(HCSR04Range r){
+    hcsr04_isReady(r);
+    unsigned long interval = r.getIntervalMicros();
+    String message = "interval duration: ";
+    message.concat(interval);
+    message.concat(" us");
+    Serial.println(message);        // print out the pulse duration
+    return interval;
+}
 
+unsigned long interval1;
+void test_hcsr04_interval1(){
+    HCSR04Range r(HCSR04_TRIG_PIN, HCSR04_ECHO_PIN);
+    interval1 = hcsr04_interval(r);
+    TEST_ASSERT_TRUE(interval1 > 0);  
+}
+
+void test_hcsr04_interval2(){
+    HCSR04Range r(HCSR04_TRIG_PIN, HCSR04_ECHO_PIN);
+    unsigned long interval2 = hcsr04_interval(r);
+    TEST_ASSERT_TRUE_MESSAGE(interval1 !=  interval2, "second measure should be different");  
 }

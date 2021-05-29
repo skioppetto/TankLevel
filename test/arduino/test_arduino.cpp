@@ -13,7 +13,12 @@ void setup(){
     RUN_TEST(test_hcsr04_init);
     RUN_TEST(test_hcsr04_trigger);
     RUN_TEST(test_hcsr04_isReady);
-    RUN_TEST(test_hcsr04_interval); 
+    Serial.println("set a distance...");
+    delay(5000);
+    RUN_TEST(test_hcsr04_interval1); 
+    Serial.println("change the distance...");
+    delay(5000);
+    RUN_TEST(test_hcsr04_interval2); 
     UNITY_END();
 }
 
