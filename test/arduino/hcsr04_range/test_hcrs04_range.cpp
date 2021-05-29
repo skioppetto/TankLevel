@@ -52,12 +52,21 @@ void test_hcsr04_trigger()
 }
 
 
-// this test need to connect the sensor 
-void test_hcsr04_receive_read(){
-    HCSR04Range r(HCSR04_TRIG_PIN, HCSR04_ECHO_PIN);
+
+void hcsr04_isReady(HCSR04Range r){
     long test_start = millis();
     bool timeout =false; 
     r.trigger();
     while (!r.isReady()){if (millis()-test_start > 1000) {timeout = true; break;} };
     TEST_ASSERT_FALSE(timeout);
+}
+
+// this test need to connect the sensor 
+void test_hcsr04_isReady(){
+    HCSR04Range r(HCSR04_TRIG_PIN, HCSR04_ECHO_PIN);
+    hcsr04_isReady(r);
+}
+
+void test_hcsr04_interval(){
+
 }
