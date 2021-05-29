@@ -7,13 +7,15 @@ void test_assert_running_arduino(){
 }
 
 void setup(){
-    
+    UNITY_BEGIN();
+    delay(2000);
+    RUN_TEST(test_assert_running_arduino);
+    RUN_TEST(test_hcsr04_init);
+    RUN_TEST(test_hcsr04_trigger);
+    UNITY_END();
 }
 
 void loop()
 {
-    UNITY_BEGIN();
-    RUN_TEST(test_assert_running_arduino);
-    RUN_TEST(test_hcsr04_init);
-    UNITY_END();
+    
 }

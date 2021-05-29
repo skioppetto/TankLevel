@@ -1,7 +1,7 @@
 class HCSR04Range
 {
 private:
-    /* data */
+    int trig, echo;
 public:
     HCSR04Range(int trig, int echo);
     ~HCSR04Range();
