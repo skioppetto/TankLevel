@@ -51,3 +51,13 @@ void test_hcsr04_trigger()
     detachInterrupt(digitalPinToInterrupt(HCSR04_TRIG_PIN));
 }
 
+
+// this test need to connect the sensor 
+void test_hcsr04_receive_read(){
+    HCSR04Range r(HCSR04_TRIG_PIN, HCSR04_ECHO_PIN);
+    long test_start = millis();
+    bool timeout =false; 
+    r.trigger();
+    while (!r.isReady()){if (millis()-test_start > 1000) {timeout = true; break;} };
+    TEST_ASSERT_FALSE(timeout);
+}

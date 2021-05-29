@@ -12,6 +12,7 @@ void setup(){
     RUN_TEST(test_assert_running_arduino);
     RUN_TEST(test_hcsr04_init);
     RUN_TEST(test_hcsr04_trigger);
+    RUN_TEST(test_hcsr04_receive_read);
     UNITY_END();
 }
 

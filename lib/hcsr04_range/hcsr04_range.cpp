@@ -17,3 +17,7 @@ void HCSR04Range::trigger(){
     delayMicroseconds(10);
     digitalWrite(this->trig, LOW);
 }
+
+bool HCSR04Range::isReady(){
+    return true;
+}
