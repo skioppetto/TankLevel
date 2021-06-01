@@ -30,3 +30,11 @@ bool HCSR04Range::isReady(){
 unsigned long HCSR04Range::getIntervalMicros(){
     return interval;
 }
+
+unsigned int HCSR04Range::getDistanceCm(){
+    return interval / 58ul;
+}
+
+unsigned int HCSR04Range::getDistanceInches(){
+    return interval / 148ul;
+}

@@ -15,6 +15,12 @@ void loop(){
     hc.trigger();
     if (hc.isReady()){
         Serial.print (hc.getIntervalMicros());
+        Serial.print( " us;\t");
+        Serial.print (hc.getDistanceCm());
+        Serial.print( " cm;\t");
+        Serial.print (hc.getDistanceInches());
+        Serial.println( " inches;");
+        
     }
     delay(1000);
 }
