@@ -21,13 +21,13 @@ bool HCSR04Range::checkMinCycle(){
 
 void HCSR04Range::trigger(){
     if (checkMinCycle()){
-        //noInterrupts();     // disable interrupts to be more precise during pulse measure
+        noInterrupts();     // disable interrupts to be more precise during pulse measure
         digitalWrite(trig, LOW);
         digitalWrite(trig, HIGH);
         delayMicroseconds(10);
         digitalWrite(trig, LOW);
         interval = pulseIn(echo, HIGH);
-        //interrupts();       // reenable after returning a value
+        interrupts();       // reenable after returning a value
         last_measure_ms = millis();
         ready = true;
     }
