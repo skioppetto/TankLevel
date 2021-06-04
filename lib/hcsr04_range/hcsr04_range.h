@@ -1,3 +1,4 @@
+#ifndef POC_NATIVE
 const unsigned int HCSR04_MIN_CYCLE_MS = 60;
 class HCSR04Range
 {
@@ -16,3 +17,4 @@ public:
     unsigned int getDistanceCm();
     unsigned int getDistanceInches();
 };
+#endif
