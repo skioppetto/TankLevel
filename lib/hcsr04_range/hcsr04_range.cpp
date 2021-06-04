@@ -1,3 +1,4 @@
+#ifndef POC_NATIVE
 #include <hcsr04_range.h>
 #include <Arduino.h>
 HCSR04Range::HCSR04Range(int trig, int echo)
@@ -50,3 +51,4 @@ unsigned int HCSR04Range::getDistanceCm(){
 unsigned int HCSR04Range::getDistanceInches(){
     return interval / 148ul;
 }
+#endif
