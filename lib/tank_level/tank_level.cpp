@@ -10,18 +10,18 @@ TankLevel::~TankLevel()
     calculateStep();
 }
 
-void TankLevel::setHeightCm(int hc){heightCm = hc; calculateStep();}
-void TankLevel::setMinHeightCm(int mhc){minHeightCm = mhc;}
+void TankLevel::setHeight(int hc){height = hc; calculateStep();}
+void TankLevel::setMinHeight(int mhc){minHeight = mhc;}
 void TankLevel::setLevels(int l){levels = l; calculateStep();}
 void TankLevel::setMeasure(int m){measure = m;}
-int TankLevel::getHeightCm(){return heightCm;}
-int TankLevel::getMinHeightCm(){return minHeightCm;}
+int TankLevel::getHeight(){return height;}
+int TankLevel::getMinHeight(){return minHeight;}
 int TankLevel::getLevels(){return levels;}
 int TankLevel::getMeasure(){return measure;}
 int TankLevel::getLevel(){
-    if (measure > (heightCm - minHeightCm))
+    if (measure > (height - minHeight))
         return 0;
     else 
-        return ((heightCm - measure) / step) + 1;
+        return ((height - measure) / step) + 1;
 }
-void TankLevel::calculateStep(){this->step = heightCm / levels; }
+void TankLevel::calculateStep(){this->step = height / levels; }
