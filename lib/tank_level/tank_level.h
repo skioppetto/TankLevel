@@ -2,7 +2,8 @@ class TankLevel
 {
 private:
     /* data */
-    int heightCm, minHeightCm, levels, measure;
+    int heightCm, minHeightCm, levels, measure, step;
+    void calculateStep();    // calculate step based on height and nr of levels 
 public:
     TankLevel(/* args */);
     ~TankLevel();

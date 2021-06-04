@@ -14,6 +14,7 @@ int main(int argc, char const *argv[])
     RUN_TEST(test_calculate_levels_4);
     RUN_TEST(test_calculate_levels_5);
     RUN_TEST(test_calculate_levels_8_height_80);
+    RUN_TEST(test_update_levels_runtime);
     UNITY_END();
     return 0;
 }

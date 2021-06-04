@@ -63,3 +63,14 @@ void test_calculate_levels_8_height_80(){
     test_calculate_level(tl, 13, 7);
     test_calculate_level(tl, 6, 8);
 }
+
+void test_update_levels_runtime(){
+    TankLevel tl;
+    init_tank_level(tl, 80, 5, 8);
+    test_calculate_level(tl, 44, 4);
+    test_calculate_level(tl, 27, 6);
+    tl.setLevels(2);
+    test_calculate_level(tl, 44, 1);
+    test_calculate_level(tl, 27, 2);
+    
+}
