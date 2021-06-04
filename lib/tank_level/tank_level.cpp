@@ -19,8 +19,10 @@ int TankLevel::getMinHeight(){return minHeight;}
 int TankLevel::getLevels(){return levels;}
 int TankLevel::getMeasure(){return measure;}
 int TankLevel::getLevel(){
-    if (measure > (height - minHeight))
-        return 0;
+    if (measure > height)
+        return LEVEL_OVERFLOW;
+    else if (measure > (height - minHeight))
+        return LEVEL_LOW;
     else 
         return ((height - measure) / step) + 1;
 }

@@ -32,7 +32,8 @@ void test_calculate_level(TankLevel &tl, int measure, int level){
 void test_calculate_levels_4(){
     TankLevel tl;
     init_tank_level(tl, 100, 10, 4);
-    test_calculate_level(tl, 91, 0);
+    test_calculate_level(tl, 102, TankLevel::LEVEL_OVERFLOW); 
+    test_calculate_level(tl, 91, TankLevel::LEVEL_LOW);
     test_calculate_level(tl, 78, 1);
     test_calculate_level(tl, 60, 2);
     test_calculate_level(tl, 45, 3);
@@ -42,7 +43,7 @@ void test_calculate_levels_4(){
 void test_calculate_levels_5(){
     TankLevel tl;
     init_tank_level(tl, 100, 10, 5);
-    test_calculate_level(tl, 91, 0);
+    test_calculate_level(tl, 91, TankLevel::LEVEL_LOW);
     test_calculate_level(tl, 85, 1);
     test_calculate_level(tl, 66, 2);
     test_calculate_level(tl, 48, 3);
@@ -53,7 +54,8 @@ void test_calculate_levels_5(){
 void test_calculate_levels_8_height_80(){
     TankLevel tl;
     init_tank_level(tl, 80, 5, 8);
-    test_calculate_level(tl, 97, 0);
+    test_calculate_level(tl, 97, TankLevel::LEVEL_OVERFLOW);
+    test_calculate_level(tl, 79, TankLevel::LEVEL_LOW);
     test_calculate_level(tl, 75, 1);
     test_calculate_level(tl, 66, 2);
     test_calculate_level(tl, 55, 3);
