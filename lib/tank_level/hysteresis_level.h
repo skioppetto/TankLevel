@@ -7,7 +7,8 @@ public:
     static const int UNCHANGED = 0;
     static const int LOW = -1;
     static const int HIGH = 1;
-    
+    HysteresisLevel();
     HysteresisLevel(int level, int threshold); // threshold used to evaluate upper and lower level in hysteresis
     int eval(int measure);
+    void setLevel(int level, int threshold);
 };

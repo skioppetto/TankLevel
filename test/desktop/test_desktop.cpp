@@ -17,6 +17,7 @@ int main(int argc, char const *argv[])
     RUN_TEST(test_calculate_levels_8_height_80);
     RUN_TEST(test_update_levels_runtime);
     RUN_TEST(test_hysteresis_level_eval);
+    RUN_TEST(test_hysteresis_setLevel);
     UNITY_END();
     return 0;
 }
