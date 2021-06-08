@@ -1,9 +1,12 @@
+#include <hysteresis_level.h>
 class TankLevel
 {
 private:
     /* data */
-    int height, minHeight, levels, measure, step;
+    int height, minHeight, levels, measure, step, hysteresis, currentLevel;
+    HysteresisLevel *hystersisLevels; // hold hysteresis level logic for each level
     void calculateStep();    // calculate step based on height and nr of levels 
+    void calculateHysteresis(); // calculate hysteresis if a value was set
 public:
     static const int LEVEL_LOW = 0;
     static const int LEVEL_OVERFLOW = -1;
@@ -18,4 +21,5 @@ public:
     void setMeasure(int);
     int getMeasure();
     int getLevel();
+    void setHysteresis(int);
 };

@@ -18,6 +18,8 @@ int main(int argc, char const *argv[])
     RUN_TEST(test_update_levels_runtime);
     RUN_TEST(test_hysteresis_level_eval);
     RUN_TEST(test_hysteresis_setLevel);
+    RUN_TEST(test_hysteresis_level_up);
+    RUN_TEST(test_hysteresis_level_down);
     UNITY_END();
     return 0;
 }

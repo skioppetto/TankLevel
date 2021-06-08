@@ -15,5 +15,5 @@ void test_hysteresis_setLevel(){
     hl.setLevel(100, 5);
     TEST_ASSERT_EQUAL(HysteresisLevel::UNCHANGED,  hl.eval (103));
     TEST_ASSERT_EQUAL(HysteresisLevel::HIGH,  hl.eval (106));
-    TEST_ASSERT_EQUAL(HysteresisLevel::LOW,  hl.eval (94));
+   TEST_ASSERT_EQUAL(HysteresisLevel::LOW,  hl.eval (94));
 }

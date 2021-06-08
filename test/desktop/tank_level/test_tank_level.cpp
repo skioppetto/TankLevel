@@ -76,3 +76,33 @@ void test_update_levels_runtime(){
     test_calculate_level(tl, 27, 2);
     
 }
+
+void test_hysteresis_level_up(){
+    TankLevel tl;
+    init_tank_level(tl, 80, 5, 8);
+    // step between levels is 10, set an hysteresis of 2
+    tl.setHysteresis(2);
+    // first level is freely set, level 4 is from 50 to 40
+    test_calculate_level(tl, 44, 4);
+    // to go up to level 5, need to be < 38
+    test_calculate_level(tl, 38, 4);
+    test_calculate_level(tl, 37, 5);
+    // to go back to level 4, need to be > 42
+    //test_calculate_level(tl, 42, 5);
+    //test_calculate_level(tl, 45, 4);
+}
+
+void test_hysteresis_level_down(){
+    TankLevel tl;
+    init_tank_level(tl, 80, 5, 8);
+    // step between levels is 10, set an hysteresis of 2
+    tl.setHysteresis(2);
+    // first level is freely set, level 4 is from 50 to 40
+    test_calculate_level(tl, 44, 4);
+    // to go down to level 3, need to be > 52
+    test_calculate_level(tl, 52, 4);
+    test_calculate_level(tl, 53, 3);
+    // to go back to level 4, need to be > 42
+    //test_calculate_level(tl, 42, 5);
+    //test_calculate_level(tl, 45, 4);
+}
