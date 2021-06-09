@@ -27,7 +27,7 @@ void HCSR04Range::trigger(){
         digitalWrite(trig, HIGH);
         delayMicroseconds(10);
         digitalWrite(trig, LOW);
-        interval = pulseIn(echo, HIGH);
+        interval = pulseIn(echo, HIGH, HCSR04_MAX_RANGE_US);    // if pulseIn return 0 it means it's out of range and isReady will return 0
         interrupts();       // reenable after returning a value
         last_measure_ms = millis();
         ready = true;
