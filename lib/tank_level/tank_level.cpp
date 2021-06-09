@@ -31,10 +31,10 @@ int TankLevel::getLevel(){
     }
     if (hysteresis > 0){
         if (this->currentLevel >= 0){
-            if (retLevel == this->currentLevel-1 && hystersisLevels[retLevel-1].eval(measure) != HysteresisLevel::HIGH){
+            if (retLevel == this->currentLevel-1 && hystersisLevels[retLevel-1].eval(measure) != HysteresisLevel::LEVEL_HIGH){
                 return this->currentLevel;
             }
-            else if (retLevel == this->currentLevel+1 && hystersisLevels[this->currentLevel-1].eval(measure) != HysteresisLevel::LOW){
+            else if (retLevel == this->currentLevel+1 && hystersisLevels[this->currentLevel-1].eval(measure) != HysteresisLevel::LEVEL_LOW){
                 return this->currentLevel;
             }
         }
