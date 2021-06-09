@@ -29,21 +29,18 @@ int TankLevel::getLevel(){
     else {
         retLevel = ((height - measure) / step) + 1;
     }
-    bool unchange = false;
-    if (hysteresis && currentLevel >= 0){
-        if (retLevel == currentLevel-1 && hystersisLevels[retLevel-1].eval(measure) != HysteresisLevel::HIGH){
-            unchange = true;
+    if (hysteresis > 0){
+        if (this->currentLevel >= 0){
+            if (retLevel == this->currentLevel-1 && hystersisLevels[retLevel-1].eval(measure) != HysteresisLevel::HIGH){
+                return this->currentLevel;
+            }
+            else if (retLevel == this->currentLevel+1 && hystersisLevels[this->currentLevel-1].eval(measure) != HysteresisLevel::LOW){
+                return this->currentLevel;
+            }
         }
-        if (retLevel == currentLevel+1 && hystersisLevels[currentLevel-1].eval(measure) != HysteresisLevel::LOW){
-            unchange = true;
-        }
+        this->currentLevel = retLevel;
     }
-    if (!unchange){
-        currentLevel = retLevel;
-        return retLevel;
-    }else{
-        return currentLevel;
-    }
+    return retLevel;
 }
 void TankLevel::calculateStep(){this->step = height / levels; }
 void TankLevel::setHysteresis(int h){this->hysteresis = h; calculateHysteresis();}
