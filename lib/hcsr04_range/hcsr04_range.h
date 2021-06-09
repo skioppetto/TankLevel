@@ -1,5 +1,6 @@
 #ifndef POC_NATIVE
 const unsigned int HCSR04_MIN_CYCLE_MS = 60;
+const unsigned long HCSR04_MAX_RANGE_US = 23200; // uS for 400 cm distance that is the max datasheet range 
 class HCSR04Range
 {
 private:
