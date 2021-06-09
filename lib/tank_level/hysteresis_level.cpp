@@ -8,11 +8,11 @@ HysteresisLevel::HysteresisLevel(int level, int threshold){
 
 int HysteresisLevel::eval(int measure){
     if (measure < this->loLevel)
-        return LOW;
+        return LEVEL_LOW;
     else if (measure > this->hiLevel)
-        return HIGH;
+        return LEVEL_HIGH;
     else 
-        return UNCHANGED;
+        return LEVEL_UNCHANGED;
 }
 
 void HysteresisLevel::setLevel(int level, int threshold){
