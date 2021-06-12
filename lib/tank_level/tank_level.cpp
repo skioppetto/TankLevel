@@ -2,14 +2,15 @@
 
 TankLevel::TankLevel(/* args */)
 {
-}
-
-TankLevel::~TankLevel()
-{
     this->levels = 1;       // init this value to avoid div by 0 in step calculation 
     this->hysteresis = 0;   // 0 means no hysteresis required
     this->currentLevel = -1; // need to evaluate if it's the first time level is set
     calculateStep();
+}
+
+TankLevel::~TankLevel()
+{
+    
 }
 
 void TankLevel::setHeight(int hc){height = hc; calculateStep();}
@@ -22,11 +23,11 @@ int TankLevel::getLevels(){return levels;}
 int TankLevel::getMeasure(){return measure;}
 int TankLevel::getLevel(){
     int retLevel;
-    if (measure > height)
+    if (measure > height){
         retLevel = LEVEL_OVERFLOW;
-    else if (measure > (height - minHeight))
+    }else if (measure > (height - minHeight)){
         retLevel = LEVEL_LOW;
-    else {
+    }else {
         retLevel = ((height - measure) / step) + 1;
     }
     if (hysteresis > 0){
