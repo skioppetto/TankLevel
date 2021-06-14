@@ -1,8 +1,9 @@
 #include<tank_level.h>
 
-TankLevel::TankLevel(/* args */)
-{
-    this->levels = 1;       // init this value to avoid div by 0 in step calculation 
+TankLevel::TankLevel(int height, int levels)
+{   
+    this->height = height;
+    this->levels = (levels>0)?levels:1;       // init this value to avoid div by 0 in step calculation 
     this->hysteresis = 0;   // 0 means no hysteresis required
     this->currentLevel = -1; // need to evaluate if it's the first time level is set
     calculateStep();
@@ -10,7 +11,6 @@ TankLevel::TankLevel(/* args */)
 
 TankLevel::~TankLevel()
 {
-    
 }
 
 void TankLevel::setHeight(int hc){height = hc; calculateStep();}

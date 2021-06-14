@@ -10,7 +10,7 @@ private:
 public:
     static const int LEVEL_LOW = 0;
     static const int LEVEL_OVERFLOW = -1;
-    TankLevel(/* args */);
+    TankLevel(int height, int levels);
     ~TankLevel();
     void setHeight(int);
     int getHeight();
