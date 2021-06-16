@@ -32,6 +32,9 @@ RH_ASK driver;
 unsigned char last_level = 0;
 
 void setup() {
+  #ifdef DEBUG
+  Serial.begin(9600);
+  #endif
   driver.init();
   tl.setMinHeight(DEFAULT_MIN_HEIGHT);
   tl.setHysteresis(DEFAULT_HYSTERESIS);
@@ -40,12 +43,16 @@ void setup() {
 void loop() {
   hc.trigger();
   if (hc.isReady()){
-    tl.setMeasure(hc.getDistanceCm);
-    unsigned char current_level = tl.getLevel();
-    if (current_level != last_level){
-      driver.send((uint8_t*) rmLevel.encode(current_level));
+    tl.setMeasure(hc.getDistanceCm());
+    int current_level = tl.getLevel();
+    if (current_level >= 0 && current_level != last_level){
+      driver.send((uint8_t*) rmLevel.encode(current_level), rmLevel.getSize());
       driver.waitPacketSent();
       last_level = current_level;
+      #ifdef DEBUG
+      Serial.print("message sent: ");
+      Serial.println(current_level); 
+      #endif
     }
   }
 }
