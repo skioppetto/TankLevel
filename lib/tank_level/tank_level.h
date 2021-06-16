@@ -7,6 +7,7 @@ private:
     HysteresisLevel *hystersisLevels; // hold hysteresis level logic for each level
     void calculateStep();    // calculate step based on height and nr of levels 
     void calculateHysteresis(); // calculate hysteresis if a value was set
+    int calculateLevel(); // calculate the current level
 public:
     static const int LEVEL_LOW = 0;
     static const int LEVEL_OVERFLOW = -1;
