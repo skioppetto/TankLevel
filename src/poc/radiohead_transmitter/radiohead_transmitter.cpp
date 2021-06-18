@@ -1,4 +1,3 @@
-#ifdef POC_RADIOHEAD_TRANSMITTER
 #include <RH_ASK.h>
 #include <SPI.h> // Not actually used but needed to compile
 
@@ -19,4 +18,3 @@ void loop()
     driver.waitPacketSent();
     delay(1000);
 }
-#endif

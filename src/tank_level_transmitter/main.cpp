@@ -1,4 +1,3 @@
-#ifdef MAIN
 #include <Arduino.h>
 #include <tank_level.h>
 #include <hcsr04_range.h>
@@ -56,4 +55,3 @@ void loop() {
     }
   }
 }
-#endif

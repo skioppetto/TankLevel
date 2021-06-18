@@ -1,4 +1,3 @@
-#ifdef POC_HCSR04_HYSTERESIS
 #include <Arduino.h>
 #include <hcsr04_range.h>
 #include <tank_level.h>
@@ -30,4 +29,3 @@ void loop(){
         
     }
 }
-#endif

@@ -1,4 +1,3 @@
-#ifdef POC_HCSR04_MINCYCLE
 #include<Arduino.h>
 #include<hcsr04_range.h>
 
@@ -26,4 +25,3 @@ void loop(){
     }
     delay(10);
 }
-#endif
