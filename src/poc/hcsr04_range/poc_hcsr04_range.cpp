@@ -1,4 +1,3 @@
-#ifdef POC_HCSR04
 #include <Arduino.h>
 #include <hcsr04_range.h>
 
@@ -24,4 +23,3 @@ void loop(){
     }
     delay(1000);
 }
-#endif
