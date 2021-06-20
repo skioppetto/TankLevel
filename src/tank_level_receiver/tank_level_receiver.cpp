@@ -27,12 +27,33 @@ void colorWipe(uint32_t c, uint8_t wait, unsigned int pixels)
   }
 }
 
+void status_waiting()
+{
+  strip.setPixelColor(0, strip.Color(0, 0, 0));
+  strip.show();
+}
+void status_receiving()
+{
+  strip.setPixelColor(0, strip.Color(0, 255, 0));
+  strip.show();
+}
+
+void status_error()
+{
+  strip.setPixelColor(0, strip.Color(255, 0, 0));
+  strip.show();
+}
+
 void setup()
 {
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
-  driver.init(); // TODO: should I do something if driver init fail? see #53
+  status_error();
+  if (driver.init())
+  {  
+    status_waiting();
+  }
   strip.begin();
   strip.setBrightness(50);
   strip.clear(); // Initialize all pixels to 'off'
@@ -46,6 +67,7 @@ void loop()
   uint8_t size = sizeof(msg);
   if (driver.recv(msg, &size))
   {
+    status_receiving();
     rmReceived.decode(msg);
     if (last_UID != rmReceived.getUID())
     {
@@ -71,5 +93,6 @@ void loop()
       Serial.println(rmReceived.getUID());
 #endif
     }
+    status_waiting();
   }
 }
