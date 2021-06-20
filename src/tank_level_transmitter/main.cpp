@@ -6,7 +6,7 @@
 #include <SPI.h> // Not actually used but needed to compile
 
 const int DEFAULT_HEIGHT = 50;
-const int DEFAULT_NR_LEVELS = 4; 
+const int DEFAULT_NR_LEVELS = 6; 
 const int DEFAULT_MIN_HEIGHT = 5; 
 const int DEFAULT_HYSTERESIS = 3;
 const int HCSR04_TRIGGER_PIN = 8;
