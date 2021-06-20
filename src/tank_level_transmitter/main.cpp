@@ -12,6 +12,8 @@ const int DEFAULT_HYSTERESIS = 3;
 const int HCSR04_TRIGGER_PIN = 8;
 const int HCSR04_ECHO_PIN = 9; 
 
+const int DUPLICATED_MESSAGES = 5;
+
 // Tank Level message types (move to include?)
 const unsigned char TANK_LEVEL_MSG_TYPE = 0XA;
 const unsigned char TANK_LEVEL_MSG_PROGRESSIVE = 0x01;  // only one tank level in the network
@@ -45,8 +47,12 @@ void loop() {
     tl.setMeasure(hc.getDistanceCm());
     int current_level = tl.getLevel();
     if (current_level >= 0 && current_level != last_level){
-      driver.send((uint8_t*) rmLevel.encode(current_level), rmLevel.getSize());
-      driver.waitPacketSent();
+      for (int i=0; i<DUPLICATED_MESSAGES; i++){
+        driver.send((uint8_t*) rmLevel.encode(current_level), rmLevel.getSize());
+        driver.waitPacketSent();
+        delay(50);
+      }
+      rmLevel.newUID(); // increase UID for next message
       last_level = current_level;
       #ifdef DEBUG
       Serial.print("message sent: ");

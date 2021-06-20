@@ -150,7 +150,7 @@ void test_message_newUID_rand(){
     RadioMessage rm1;
     RadioMessage rm2;
     TEST_ASSERT_NOT_EQUAL(rm2.getUID(), rm1.getUID());
-
+    
 }
 
 
