@@ -61,6 +61,7 @@ void setup()
 }
 
 unsigned char last_UID = 0;
+unsigned char last_value = 0;
 
 void loop()
 {
@@ -74,7 +75,10 @@ void loop()
       status_receiving();
       if (last_UID != rmReceived.getUID())
       {
-        colorWipe(strip.Color(255, 0, 0), 50, rmReceived.getValue());
+        if (last_value != rmReceived.getValue()){
+          colorWipe(strip.Color(255, 0, 0), 50, rmReceived.getValue());
+          last_value = rmReceived.getValue();
+        }
         last_UID = rmReceived.getUID();
 #ifdef DEBUG
         Serial.print("Message received:: UID: ");
