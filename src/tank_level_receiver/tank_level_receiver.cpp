@@ -3,6 +3,7 @@
 #include <RH_ASK.h>
 #include <SPI.h> // Not actualy used but needed to compile
 #include <Adafruit_NeoPixel.h>
+#include <tank_level_msg.h>
 
 #define NEOPIXEL_PIN 10
 
@@ -51,7 +52,7 @@ void setup()
 #endif
   status_error();
   if (driver.init())
-  {  
+  {
     status_waiting();
   }
   strip.begin();
@@ -67,32 +68,35 @@ void loop()
   uint8_t size = sizeof(msg);
   if (driver.recv(msg, &size))
   {
-    status_receiving();
     rmReceived.decode(msg);
-    if (last_UID != rmReceived.getUID())
+    if (rmReceived.getType() == TANK_LEVEL_MSG_TYPE && rmReceived.getKey() == TANK_LEVEL_MSG_LEVEL_KEY)
     {
-      colorWipe(strip.Color(255, 0, 0), 50, rmReceived.getValue());
-      last_UID = rmReceived.getUID();
+      status_receiving();
+      if (last_UID != rmReceived.getUID())
+      {
+        colorWipe(strip.Color(255, 0, 0), 50, rmReceived.getValue());
+        last_UID = rmReceived.getUID();
 #ifdef DEBUG
-      Serial.print("Message received:: UID: ");
-      Serial.print(rmReceived.getUID());
-      Serial.print("\ttype: ");
-      Serial.print(rmReceived.getType());
-      Serial.print("\tprogressive: ");
-      Serial.print(rmReceived.getProgressive());
-      Serial.print("\tkey: ");
-      Serial.print(rmReceived.getKey());
-      Serial.print("\tvalue: ");
-      Serial.println(rmReceived.getValue());
+        Serial.print("Message received:: UID: ");
+        Serial.print(rmReceived.getUID());
+        Serial.print("\ttype: ");
+        Serial.print(rmReceived.getType());
+        Serial.print("\tprogressive: ");
+        Serial.print(rmReceived.getProgressive());
+        Serial.print("\tkey: ");
+        Serial.print(rmReceived.getKey());
+        Serial.print("\tvalue: ");
+        Serial.println(rmReceived.getValue());
 #endif
-    }
-    else
-    {
+      }
+      else
+      {
 #ifdef DEBUG
-      Serial.print("Message skipped:: UID: ");
-      Serial.println(rmReceived.getUID());
+        Serial.print("Message skipped:: UID: ");
+        Serial.println(rmReceived.getUID());
 #endif
+      }
+      status_waiting();
     }
-    status_waiting();
   }
 }
