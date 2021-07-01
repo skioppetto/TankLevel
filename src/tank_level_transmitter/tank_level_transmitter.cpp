@@ -13,8 +13,10 @@ const int DEFAULT_HYSTERESIS = 3;
 const int HCSR04_TRIGGER_PIN = 8;
 const int HCSR04_ECHO_PIN = 9; 
 
-const int DUPLICATED_MESSAGES = 5;
+const int DUPLICATED_MESSAGES = 3;
+const int DUPLICATED_MESSAGES_DELAY = 100; // ms between resent messages
 const int RESEND_TIMEOUT = 2000; 
+
 
 RadioMessage rmLevel(TANK_LEVEL_MSG_TYPE, TANK_LEVEL_MSG_PROGRESSIVE, TANK_LEVEL_MSG_LEVEL_KEY);
 
@@ -45,7 +47,7 @@ void loop() {
       for (int i=0; i<DUPLICATED_MESSAGES; i++){
         driver.send((uint8_t*) rmLevel.encode(current_level), rmLevel.getSize());
         driver.waitPacketSent();
-        delay(50);
+        delay(DUPLICATED_MESSAGES_DELAY);
       }
       rmLevel.newUID(); // increase UID for next message
       last_level = current_level;
