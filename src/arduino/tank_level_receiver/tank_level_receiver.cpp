@@ -2,69 +2,26 @@
 #include <radio_message.h>
 #include <RH_ASK.h>
 #include <SPI.h> // Not actualy used but needed to compile
-#include <Adafruit_NeoPixel.h>
 #include <tank_level_msg.h>
+#include "common_receiver.cpp"
 #include <LowPower.h>
 
-#define NEOPIXEL_PIN 10
 #define WAKEUP_PIN 2
 
 RH_ASK driver;
 RadioMessage rmReceived;
-Adafruit_NeoPixel strip(7, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
-
-void colorWipe(uint32_t c, uint8_t wait, unsigned int pixels)
-{
-  strip.clear();
-  for (uint16_t i = 0; i < strip.numPixels(); i++)
-  {
-    if (i > 0)
-    {
-      if (i <= pixels)
-        strip.setPixelColor(i, strip.Color(255, 0, 0));
-      else
-        strip.setPixelColor(i, strip.Color(0, 00, 0));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-void status_sleep(){
-  strip.clear();
-  strip.show();  
-}
-
-void status_waiting()
-{
-  strip.setPixelColor(0, strip.Color(0, 0, 0));
-  strip.show();
-}
-void status_receiving()
-{
-  strip.setPixelColor(0, strip.Color(0, 255, 0));
-  strip.show();
-}
-
-void status_error()
-{
-  strip.setPixelColor(0, strip.Color(255, 0, 0));
-  strip.show();
-}
 
 void setup()
 {
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
-  status_error();
+  strip_status_error();
   if (driver.init())
   {
-    status_waiting();
+    strip_status_waiting();
   }
-  strip.begin();
-  strip.setBrightness(50);
-  strip.clear(); // Initialize all pixels to 'off'
+  strip_setup();
   pinMode(WAKEUP_PIN, INPUT_PULLUP);
 }
 
@@ -75,13 +32,13 @@ unsigned int WAKE_UP_DURATION = 8000;
 
 void wakeUp(){
   wake_up_time = millis();
-  status_receiving();
+  strip_status_receiving();
 }
 
 void loop()
 {
   if (millis() - wake_up_time > WAKE_UP_DURATION){
-    status_sleep();
+    strip_status_sleep();
     /*go to sleep*/
     attachInterrupt(digitalPinToInterrupt(WAKEUP_PIN), wakeUp, LOW);
     LowPower.powerDown(SLEEP_FOREVER, ADC_OFF,BOD_OFF);
@@ -98,7 +55,7 @@ void loop()
       if (last_UID != rmReceived.getUID())
       {
         if (last_value != rmReceived.getValue()){
-          colorWipe(strip.Color(255, 0, 0), 50, rmReceived.getValue());
+          strip_colorWipe(strip.Color(255, 0, 0), 50, rmReceived.getValue());
           last_value = rmReceived.getValue();
         }
         last_UID = rmReceived.getUID();
