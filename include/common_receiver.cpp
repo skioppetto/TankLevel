@@ -1,6 +1,10 @@
 #include <Adafruit_NeoPixel.h>
 
+#ifdef ESP8266 
+#define NEOPIXEL_PIN 0
+#else
 #define NEOPIXEL_PIN 10
+#endif
 
 Adafruit_NeoPixel strip(7, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
