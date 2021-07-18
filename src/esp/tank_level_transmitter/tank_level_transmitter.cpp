@@ -1,6 +1,6 @@
-//#define BLYNK_PRINT Serial
-#define HCSR04_TRIGGER_PIN 0
-#define HCSR04_ECHO_PIN 2
+#define BLYNK_PRINT Serial
+#define HCSR04_TRIGGER_PIN 14 //D5
+#define HCSR04_ECHO_PIN 12    //D6
 #define READING_FREQUENCY_MS 5000ul
 #define DEFAULT_HEIGHT 100
 #define DEFAULT_NR_LEVELS 7
