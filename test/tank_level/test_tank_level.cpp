@@ -106,6 +106,22 @@ void test_hysteresis_level_down(){
     //test_calculate_level(tl, 45, 4); 
 }
 
+void test_hysteresis_level_down_setcurrentlevel(){
+    TankLevel tl(80, 8);
+    init_tank_level(&tl, 5);
+    // step between levels is 10, set an hysteresis of 2
+    tl.setHysteresis(2);
+    // force current level without measure
+    tl.setCurrentLevel(4);
+    // to go down to level 3, need to be > 52
+    test_calculate_level(tl, 52, 4);
+    test_calculate_level(tl, 53, 3);
+    // to go back to level 4, need to be > 42
+    //test_calculate_level(tl, 42, 5);
+    //test_calculate_level(tl, 45, 4); 
+}
+
+
 void test_tank_level_init_level_0(){
     TankLevel tl(80, 0);
     TEST_ASSERT_EQUAL(1, tl.getLevels()); // test levels has min value 1 
@@ -123,6 +139,7 @@ int main(int argc, char const *argv[])
     RUN_TEST(test_update_levels_runtime);
     RUN_TEST(test_hysteresis_level_up);
     RUN_TEST(test_hysteresis_level_down);
+    RUN_TEST(test_hysteresis_level_down_setcurrentlevel);
     UNITY_END();
     return 0;
 }

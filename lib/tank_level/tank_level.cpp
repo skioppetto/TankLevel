@@ -24,6 +24,7 @@ void TankLevel::setLevels(int l)
     levels = l;
     calculateStep();
 }
+void TankLevel::setCurrentLevel(int l){currentLevel = l;}
 void TankLevel::setMeasure(int m) { measure = m; }
 int TankLevel::getHeight() { return height; }
 int TankLevel::getMinHeight() { return minHeight; }

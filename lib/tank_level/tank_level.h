@@ -23,4 +23,5 @@ public:
     int getMeasure();
     int getLevel();
     void setHysteresis(int);
+    void setCurrentLevel(int);
 };
