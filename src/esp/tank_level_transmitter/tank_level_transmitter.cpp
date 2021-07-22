@@ -1,9 +1,12 @@
-extern "C" {
-  #include "user_interface.h"
+extern "C"
+{
+#include "user_interface.h"
 }
 
 #define RTC_START_MEMORY 65
+#ifdef DEBUG
 #define BLYNK_PRINT Serial
+#endif
 #define HCSR04_TRIGGER_PIN 14 //D5
 #define HCSR04_ECHO_PIN 12    //D6
 #define READING_FREQUENCY_MS 5000ul
@@ -30,7 +33,11 @@ TankLevel tl(DEFAULT_HEIGHT, DEFAULT_NR_LEVELS);
 HCSR04Range hc(HCSR04_TRIGGER_PIN, HCSR04_ECHO_PIN);
 int last_sent = 0;
 WidgetLED ledReady(V2);
-int currentLevel = -1;
+int currentLevel = -1, level;
+unsigned long timeout_last_millis;
+const unsigned int HC_TIMEOUT_MILLIS = 2000;
+const unsigned int CONN_TIMEOUT_MILLIS = 5000;
+bool connected = false;
 
 void setup()
 {
@@ -45,39 +52,54 @@ void setup()
 #endif
   if (currentLevel >= 0 && currentLevel <= tl.getLevels())
     tl.setCurrentLevel(currentLevel);
-  Blynk.begin(auth, ssid, pass);
+  timeout_last_millis = millis();
+  while (millis() < timeout_last_millis + HC_TIMEOUT_MILLIS)
+  {
+    hc.trigger();
+    if (hc.isReady())
+    {
+      tl.setMeasure(hc.getDistanceCm());
+      level = tl.getLevel();
+      #ifdef DEBUG
+      Serial.print("distance: ");
+      Serial.print(hc.getDistanceCm());
+      Serial.print("\tlevel: ");
+      Serial.print(level);
+      Serial.print("\tinterval: ");
+      Serial.println(hc.getIntervalMicros());
+      #endif
+      if (level != currentLevel)
+      {
+        Blynk.connectWiFi(ssid, pass); // Blynk WiFi setup
+        Blynk.config(auth);
+        connected = Blynk.connect(CONN_TIMEOUT_MILLIS);
+      }else{
+        break;
+      }
+    }
+  }
+  #ifdef DEBUG
+  Serial.begin(9600);
+  Serial.print("connected: ");
+  Serial.println(connected);
+  #endif
+  if (!connected)
+    ESP.deepSleep(10e6);
 }
 
 void loop()
 {
   Blynk.run();
-  hc.trigger();
-  if (millis() >= (last_sent + READING_FREQUENCY_MS) /* && hc.isReady() */)
-  {
-    tl.setMeasure(hc.getDistanceCm());
-    if (hc.isReady())
-    {
-      ledReady.on();
-      int level = tl.getLevel();
-      Blynk.virtualWrite(V0, hc.getDistanceCm());
-      Blynk.virtualWrite(V1, level);
-      if (currentLevel != level){
-        currentLevel = level;
-        system_rtc_mem_write(RTC_START_MEMORY, &currentLevel, sizeof(int));
-      }
-    }
-    else
-    {
-      ledReady.off();
-    }
-#ifdef DEBUG
-    Serial.print("distance: ");
-    Serial.print(hc.getDistanceCm());
-    Serial.print("\tlevel: ");
-    Serial.print(tl.getLevel());
-    Serial.print("\tinterval: ");
-    Serial.println(hc.getIntervalMicros());
-#endif
-    last_sent = millis();
-  }
+
+  if (level >= 0)
+    ledReady.on();
+  else
+    ledReady.off();
+
+  Blynk.virtualWrite(V0, hc.getDistanceCm());
+  Blynk.virtualWrite(V1, level);
+  currentLevel = level;
+  system_rtc_mem_write(RTC_START_MEMORY, &currentLevel, sizeof(int));
+
+  ESP.deepSleep(10e6);
 }
