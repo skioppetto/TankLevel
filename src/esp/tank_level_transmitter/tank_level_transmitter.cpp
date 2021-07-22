@@ -1,3 +1,8 @@
+extern "C" {
+  #include "user_interface.h"
+}
+
+#define RTC_START_MEMORY 65
 #define BLYNK_PRINT Serial
 #define HCSR04_TRIGGER_PIN 14 //D5
 #define HCSR04_ECHO_PIN 12    //D6
@@ -25,14 +30,21 @@ TankLevel tl(DEFAULT_HEIGHT, DEFAULT_NR_LEVELS);
 HCSR04Range hc(HCSR04_TRIGGER_PIN, HCSR04_ECHO_PIN);
 int last_sent = 0;
 WidgetLED ledReady(V2);
+int currentLevel = -1;
+
 void setup()
 {
-// Debug console
-#ifdef DEBUG
-  Serial.begin(9600);
-#endif
   tl.setMinHeight(5);
   tl.setHysteresis(3);
+  system_rtc_mem_read(RTC_START_MEMORY, &currentLevel, sizeof(int));
+  // Debug console
+#ifdef DEBUG
+  Serial.begin(9600);
+  Serial.print("currentLevel: ");
+  Serial.println(currentLevel);
+#endif
+  if (currentLevel >= 0 && currentLevel <= tl.getLevels())
+    tl.setCurrentLevel(currentLevel);
   Blynk.begin(auth, ssid, pass);
 }
 
@@ -46,8 +58,13 @@ void loop()
     if (hc.isReady())
     {
       ledReady.on();
+      int level = tl.getLevel();
       Blynk.virtualWrite(V0, hc.getDistanceCm());
-      Blynk.virtualWrite(V1, tl.getLevel());
+      Blynk.virtualWrite(V1, level);
+      if (currentLevel != level){
+        currentLevel = level;
+        system_rtc_mem_write(RTC_START_MEMORY, &currentLevel, sizeof(int));
+      }
     }
     else
     {
