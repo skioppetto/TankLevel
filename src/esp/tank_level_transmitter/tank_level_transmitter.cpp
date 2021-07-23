@@ -33,7 +33,7 @@ TankLevel tl(DEFAULT_HEIGHT, DEFAULT_NR_LEVELS);
 HCSR04Range hc(HCSR04_TRIGGER_PIN, HCSR04_ECHO_PIN);
 int last_sent = 0;
 WidgetLED ledReady(V2);
-int currentLevel = -1, level;
+int currentLevel = -1;
 unsigned long timeout_last_millis;
 const unsigned int HC_TIMEOUT_MILLIS = 2000;
 const unsigned int CONN_TIMEOUT_MILLIS = 5000;
@@ -41,6 +41,7 @@ bool connected = false;
 
 void setup()
 {
+  int level;
   tl.setMinHeight(5);
   tl.setHysteresis(3);
   system_rtc_mem_read(RTC_START_MEMORY, &currentLevel, sizeof(int));
@@ -60,46 +61,44 @@ void setup()
     {
       tl.setMeasure(hc.getDistanceCm());
       level = tl.getLevel();
-      #ifdef DEBUG
+#ifdef DEBUG
       Serial.print("distance: ");
       Serial.print(hc.getDistanceCm());
       Serial.print("\tlevel: ");
       Serial.print(level);
       Serial.print("\tinterval: ");
       Serial.println(hc.getIntervalMicros());
-      #endif
+#endif
       if (level != currentLevel)
       {
         Blynk.connectWiFi(ssid, pass); // Blynk WiFi setup
         Blynk.config(auth);
         connected = Blynk.connect(CONN_TIMEOUT_MILLIS);
-      }else{
-        break;
       }
+      break;
     }
   }
-  #ifdef DEBUG
-  Serial.begin(9600);
+#ifdef DEBUG
   Serial.print("connected: ");
   Serial.println(connected);
-  #endif
-  if (!connected)
-    ESP.deepSleep(10e6);
+#endif
+  if (connected)
+  {
+    Blynk.virtualWrite(V1, level);
+    (level >= 0) ? ledReady.on() : ledReady.off();
+    Blynk.virtualWrite(V0, hc.getDistanceCm());
+#ifdef DEBUG
+    Serial.print("message sent: ");
+    Serial.print("\tlevel: ");
+    Serial.println(level); 
+#endif
+    delay(100);
+    currentLevel = level;
+    system_rtc_mem_write(RTC_START_MEMORY, &currentLevel, sizeof(int));
+  }
+  ESP.deepSleep(20e6);
 }
 
 void loop()
 {
-  Blynk.run();
-
-  if (level >= 0)
-    ledReady.on();
-  else
-    ledReady.off();
-
-  Blynk.virtualWrite(V0, hc.getDistanceCm());
-  Blynk.virtualWrite(V1, level);
-  currentLevel = level;
-  system_rtc_mem_write(RTC_START_MEMORY, &currentLevel, sizeof(int));
-
-  ESP.deepSleep(10e6);
 }
