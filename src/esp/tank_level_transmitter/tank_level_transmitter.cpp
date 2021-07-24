@@ -31,29 +31,42 @@ extern "C"
 
 TankLevel tl(DEFAULT_HEIGHT, DEFAULT_NR_LEVELS);
 HCSR04Range hc(HCSR04_TRIGGER_PIN, HCSR04_ECHO_PIN);
-int last_sent = 0;
 WidgetLED ledReady(V2);
 int currentLevel = -1;
-unsigned long timeout_last_millis;
+unsigned long timeout_last_count;
 const unsigned int HC_TIMEOUT_MILLIS = 2000;
 const unsigned int CONN_TIMEOUT_MILLIS = 5000;
+const unsigned int DEEP_SLEEP_TIMEOUT_MICROS = 20e6;
+const unsigned int SEND_ANYWAY_COUNT = 5*60e6 / DEEP_SLEEP_TIMEOUT_MICROS;
 bool connected = false;
+const int CURRENT_LEVEL_ADDR = RTC_START_MEMORY;
+const int SEND_ANYWAY_COUNT_ADDR = RTC_START_MEMORY + sizeof(int);
 
 void setup()
 {
   int level;
+
+  pinMode(A0, INPUT);
+
   tl.setMinHeight(5);
   tl.setHysteresis(3);
-  system_rtc_mem_read(RTC_START_MEMORY, &currentLevel, sizeof(int));
+  system_rtc_mem_read(CURRENT_LEVEL_ADDR, &currentLevel, sizeof(int));
+  system_rtc_mem_read(SEND_ANYWAY_COUNT_ADDR, &timeout_last_count, sizeof(int));
   // Debug console
 #ifdef DEBUG
   Serial.begin(9600);
   Serial.print("currentLevel: ");
-  Serial.println(currentLevel);
+  Serial.print(currentLevel);
+  Serial.print("\tcount anyway: ");
+  Serial.print(timeout_last_count);
+  Serial.print(" / ");
+  Serial.println(SEND_ANYWAY_COUNT);
 #endif
   if (currentLevel >= 0 && currentLevel <= tl.getLevels())
     tl.setCurrentLevel(currentLevel);
-  timeout_last_millis = millis();
+  if (timeout_last_count < 0)
+    timeout_last_count = 0;
+  unsigned long timeout_last_millis = millis();
   while (millis() < timeout_last_millis + HC_TIMEOUT_MILLIS)
   {
     hc.trigger();
@@ -69,34 +82,41 @@ void setup()
       Serial.print("\tinterval: ");
       Serial.println(hc.getIntervalMicros());
 #endif
-      if (level != currentLevel)
-      {
-        Blynk.connectWiFi(ssid, pass); // Blynk WiFi setup
-        Blynk.config(auth);
-        connected = Blynk.connect(CONN_TIMEOUT_MILLIS);
-      }
       break;
     }
   }
+  if (level != currentLevel || timeout_last_count > SEND_ANYWAY_COUNT)
+  {
+    Blynk.connectWiFi(ssid, pass); // Blynk WiFi setup
+    Blynk.config(auth);
+    connected = Blynk.connect(CONN_TIMEOUT_MILLIS);
+  }
+  (timeout_last_count > SEND_ANYWAY_COUNT) ? timeout_last_count = 0 : timeout_last_count++;
+  system_rtc_mem_write(SEND_ANYWAY_COUNT_ADDR, &timeout_last_count, sizeof(int));
 #ifdef DEBUG
   Serial.print("connected: ");
   Serial.println(connected);
 #endif
   if (connected)
   {
+    int raw = analogRead(A0);
+    float volt = raw / 1023.0;
+    volt = volt * 4.2;
     Blynk.virtualWrite(V1, level);
     (level >= 0) ? ledReady.on() : ledReady.off();
-    Blynk.virtualWrite(V0, hc.getDistanceCm());
+    Blynk.virtualWrite(V0, volt);
 #ifdef DEBUG
     Serial.print("message sent: ");
     Serial.print("\tlevel: ");
-    Serial.println(level); 
+    Serial.print(level);
+    Serial.print("\tvolt: ");
+    Serial.println(volt);
 #endif
     delay(100);
     currentLevel = level;
-    system_rtc_mem_write(RTC_START_MEMORY, &currentLevel, sizeof(int));
+    system_rtc_mem_write(CURRENT_LEVEL_ADDR, &currentLevel, sizeof(int));
   }
-  ESP.deepSleep(20e6);
+  ESP.deepSleep(DEEP_SLEEP_TIMEOUT_MICROS);
 }
 
 void loop()
